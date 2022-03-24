@@ -1,42 +1,31 @@
-import "./AddHouse.css"
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import axios from "axios"
 
 export const AddHouse = () => {
 
-  const [inputData, setInputData] = useState({});
-  const [data, setData]= useState([]);
-  const handleChange = (e)=>{
-    let {className,value, checked, type}= e.target;
-    value = type ==="checkbox"?checked:value;
-    setInputData({
-      ...inputData,
-      [className]: value
-    })
-  }
-  const handleSubmit = (e)=>{
-    e.preventDefault();
-    axios.post("http://localhost:8080/houses", inputData).then(()=>{
-      alert("Data add successfully");
-      setInputData();
-    })
-  }
-  const getData = ()=>{
-    axios.get("http://localhost:8080/houses").then((res)=>{
-      setData(res.data);
-      
-    })
-  }
+  const [user,setUser] =useState()
 
-  useEffect(()=>{
-    getData();
-  },[inputData])
+  
+     const handleSubmit=(e)=>{
+       e.preventDefault()
+        
+       axios.post("http://localhost:8080/houses",user).then(()=>{
+
+       setUser({})
+       })
+
+     }
+     const handleChange=(e)=>{
+       let {className,value,checked,type} =e.target;
+       value =type ==="checked" ? checked:value;
+       setUser({...user,[className]:value})
+     }
 
   return (
     <div className="addHouseContainer">
       <form onSubmit={handleSubmit}>
         <label>name</label>
-        <input type="text" className="name"  onChange={handleChange} required />
+        <input type="text" className="name" onChange={handleChange} required />
         <br />
         <label>ownerName</label>
         <input  type="text" className="ownerName" onChange={handleChange} required />
@@ -53,46 +42,16 @@ export const AddHouse = () => {
         <label>preferredTenant</label>
         <br />
         <label>bachelor</label>
-        <input  type="checkbox" onChange={handleChange} className="bachelor" />
+        <input  type="checkbox" className="bachelor" onChange={handleChange} />
         <br />
         <label>married</label>
-        <input  type="checkbox" onChange={handleChange} className="married" />
+        <input  type="checkbox" className="married" onChange={handleChange}/>
         <br />
         <label>image</label>
-        <input  type="text" className="image" onChange={handleChange} required />
+        <input  type="text" className="image" required onChange={handleChange}/>
         <br />
         <input className="submitBtn" type="submit" />
       </form>
-
-      <table>
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Owners name</th>
-          <th>Address</th>
-          <th>Area code</th>
-          <th>rent</th>
-          <th>preferred tenants</th>
-        </tr>
-        </thead>
-        <tbody>
-          {
-            data.map((e)=>{
-              return(
-                <tr key={e.id}>
-                <td>{e.name}</td>
-                <td>{e.ownerName}</td>
-                <td>{e.address}</td>
-                <td>{e.areaCode}</td>
-                <td>{e.rent}</td>
-                <td>{e.bachelor?"bachelors ":"married" }</td>
-              </tr>
-              )
-              
-            })
-      }
-        </tbody>
-      </table>
     </div>
   );
 };
