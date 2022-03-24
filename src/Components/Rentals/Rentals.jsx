@@ -68,7 +68,7 @@ export const Rentals = () => {
                   {house.married ? "married":"batchelor"}
                 </td>
                 <td className="houseImage">
-                  <img src={house.image} alt="house" />
+                  <img src={house.image} alt="house" style={{width:"200px", height:"200px"}} />
                 </td>
               </tr>
             );
